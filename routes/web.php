@@ -1,18 +1,22 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Auth;
 
+// Redirect default ke login
 Route::get('/', function () {
-    return redirect('/login'); // otomatis ke login
+    return redirect('/login');
 });
 
-Auth::routes(); // pastikan auth scaffold sudah terinstall
+// Login / Logout / Register
+Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
+// Halaman home (harus login)
+Route::get('/home', [HomeController::class, 'index'])
     ->name('home')
     ->middleware('auth');
 
-// Route resource untuk products, otomatis semua CRUD
+// Resource route untuk products (harus login)
 Route::resource('products', ProductController::class)->middleware('auth');
